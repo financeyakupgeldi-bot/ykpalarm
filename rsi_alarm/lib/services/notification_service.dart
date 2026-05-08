@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
@@ -38,10 +39,7 @@ class NotificationService {
       channelDescription: 'RSI seviye bildirimleri',
       importance: Importance.high,
       priority: Priority.high,
-      color: isOversold
-          ? const Color(0xFF4CAF50) // Yeşil - aşırı satım (alım fırsatı)
-          : const Color(0xFFEF5350), // Kırmızı - aşırı alım (satış sinyali)
-      icon: '@mipmap/ic_launcher',
+      color: isOversold ? Colors.green : Colors.red,
       playSound: true,
       enableVibration: true,
     );
@@ -58,16 +56,10 @@ class NotificationService {
     );
 
     await _plugin!.show(
-      DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      DateTime.now().millisecondsSinceEpoch ~/ 1000 % 100000,
       '📊 RSI Alarmı - $assetName',
       message,
       details,
     );
   }
-}
-
-// Dart:ui Color sınıfı yerine basit renk tutucusu
-class Color {
-  final int value;
-  const Color(this.value);
 }
